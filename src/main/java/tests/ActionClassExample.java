@@ -2,7 +2,9 @@ package tests;
 
 import java.awt.Menu;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
@@ -39,7 +41,7 @@ public class ActionClassExample extends BaseTest{
 		
 	}
 	
-	@Test
+	//@Test
 	public void sendKeysExample() {
 	
 		MenuPage menu =  new MenuPage(driver);
@@ -58,8 +60,57 @@ public class ActionClassExample extends BaseTest{
 			.sendKeys(Keys.TAB, Keys.ENTER)
 			//.sendKeys().clickAndHold().moveToElement(element).release()
 			.perform();
+	
+	}
+	
+	@Test
+	public void copyPasteExample() throws InterruptedException {
+		
+		WebElement loginLink =  driver.findElement(By.linkText("Login"));
+		loginLink.click();
+		
+		WebElement username = driver.findElement(By.id("log"));
+		WebElement password = driver.findElement(By.id("password"));
+		
+		Actions action = new Actions(driver);
+		
+		//username.click();
+		action.click(username).perform();
+		//username.sendKeys("TestUser");
+		action.sendKeys(username, "TestUser").perform();
 		
 		
+		Keys crtlKey = Platform.getCurrent().is(Platform.MAC) ? Keys.COMMAND : Keys.CONTROL;
+		
+		System.out.println("Before copy paste :" +password.getAttribute("value"));
+
+		//selectez textul pe care vreau sa il copiez
+		
+		//selectie cu CTRL+ A
+		//action.keyDown(crtlKey).sendKeys("a").keyUp(crtlKey).perform();
+		
+		//selectie cu doubleCLick()
+		//action.doubleClick().keyDown(crtlKey).sendKeys("c").keyUp(crtlKey).perform();
+		
+		//selectie din sageti
+		action
+			.keyDown(Keys.SHIFT)
+			.sendKeys(Keys.ARROW_LEFT)
+			.sendKeys(Keys.ARROW_UP)
+			.keyUp(Keys.SHIFT)
+			.keyDown(crtlKey)
+			.sendKeys("c")
+			.keyUp(crtlKey)
+			.perform();
+			
+		
+		action.click(password).perform();
+		action.keyDown(crtlKey).sendKeys("v").keyUp(crtlKey).perform();
+
+		
+		System.out.println("AFter copy paste :" +password.getAttribute("value"));
+		
+		Thread.sleep(3000);
 		
 	}
 	

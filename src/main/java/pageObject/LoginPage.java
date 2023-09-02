@@ -3,7 +3,10 @@ package pageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LoginPage {
+import utils.SeleniumWrappers;
+
+
+public class LoginPage extends SeleniumWrappers{
 
 	public WebDriver driver;
 	
@@ -18,18 +21,23 @@ public class LoginPage {
 	public By loginSuccessMsg = By.cssSelector("div[class*='sc_infobox_style_success']");
 	public By loginErrorMsg = By.cssSelector("div[class*='sc_infobox_style_error']");
 	public By closeloginPopup = By.cssSelector("a[class='popup_close']");
+	public By logoutButton = By.linkText("Logout");
 	
 	//metode
 	public void loginInApp(String user, String pass) {
-		driver.findElement(usernameField).clear();//sterge din input field
+	/*	driver.findElement(usernameField).clear();//sterge din input field
 		driver.findElement(usernameField).sendKeys(user);
 		driver.findElement(passwordField).clear();
 		driver.findElement(passwordField).sendKeys(pass);
-		driver.findElement(submit_button).click();
+		driver.findElement(submit_button).click(); */
+		sendKeys(usernameField, user);
+		sendKeys(passwordField, pass);
+		click(submit_button);
 	}
 	
 	public void closePopUp() {
-		driver.findElement(closeloginPopup).click();
+		//driver.findElement(closeloginPopup).click();
+		click(closeloginPopup);
 	}
 	
 	public boolean loginMsgIsDisplayed(By locator) {
@@ -37,5 +45,8 @@ public class LoginPage {
 		return driver.findElement(locator).isDisplayed();
 	}
 	
+	public void logoutFromApp() {
+		driver.findElement(logoutButton).click();
+	}
 	
 }
